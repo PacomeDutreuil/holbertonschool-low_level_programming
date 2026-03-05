@@ -1,9 +1,11 @@
 #include "main.h"
+#include <stddef.h>
+
 /**
  * _strstr - Locates a substring in a string
- * @haystack: The main string to be searched
- * @needle: The substring to find
- * Return: A pointer to the beginning of the substring, or NULL if not found
+ * @haystack: main string
+ * @needle: substring to find
+ * Return: pointer to beginning of substring or NULL
  */
 char *_strstr(char *haystack, char *needle)
 {
