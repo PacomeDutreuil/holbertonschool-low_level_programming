@@ -32,13 +32,18 @@ int store_add(store_t *st, session_t *s)
     while (cur) {
         if (cur->sess && cur->sess->id &&
             strcmp(cur->sess->id, s->id) == 0)
+        {
+            session_destroy(s);  /* 🔥 FIX fuite sur doublon */
             return 0;
+        }
         cur = cur->next;
     }
 
     n = node_create(s);
-    if (!n)
+    if (!n) {
+        session_destroy(s);  /* 🔥 FIX fuite si malloc échoue */
         return 0;
+    }
 
     n->next = st->head;
     st->head = n;
@@ -82,7 +87,7 @@ int store_delete(store_t *st, const char *id, session_t **out)
             else
                 st->head = cur->next;
 
-            /* 🔑 FIX PRINCIPAL : transfert d’ownership */
+            /* 🔑 transfert d’ownership */
             if (out)
                 *out = cur->sess;
             else
